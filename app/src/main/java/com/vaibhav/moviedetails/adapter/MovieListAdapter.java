@@ -11,11 +11,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.vaibhav.moviedetails.R;
 import com.vaibhav.moviedetails.data.Movie;
+import com.vaibhav.moviedetails.listeners.MovieListener;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @author Vaibhav Bhandula on 09/10/18.
@@ -24,6 +26,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private ArrayList<Movie> movies = new ArrayList<>();
     private ViewGroup parent;
+
+    private MovieListener movieListener;
 
     public MovieListAdapter(ArrayList<Movie> movies) {
         this.movies = movies;
@@ -43,11 +47,16 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return movies == null ? 0 : movies.size();
     }
 
+    public void setMovieListener(MovieListener movieListener) {
+        this.movieListener = movieListener;
+    }
+
     class MovieViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_poster) ImageView ivPoster;
         @BindView(R.id.tv_name) TextView tvName;
         @BindView(R.id.tv_year) TextView tvYear;
+        @BindView(R.id.iv_add) ImageView ivAdd;
 
         private Movie movie;
 
@@ -63,6 +72,26 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Glide.with(parent)
                     .load(movie.getPoster())
                     .into(ivPoster);
+            if (movie.isBookMarked()) {
+                ivAdd.setVisibility(View.VISIBLE);
+            } else {
+                ivAdd.setVisibility(View.GONE);
+            }
+        }
+
+        @OnClick(R.id.movie_layout) void movieClicked() {
+            if (movieListener == null) {
+                return;
+            }
+            if (movie.isBookMarked()) {
+                movie.setBookMarked(false);
+                movieListener.onUnLikeMovie(movie);
+                ivAdd.setVisibility(View.GONE);
+            } else {
+                movie.setBookMarked(true);
+                movieListener.onLikeMovie(movie);
+                ivAdd.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

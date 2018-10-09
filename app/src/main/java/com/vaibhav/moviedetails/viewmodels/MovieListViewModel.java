@@ -1,11 +1,18 @@
 package com.vaibhav.moviedetails.viewmodels;
 
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 
+import com.vaibhav.moviedetails.commons.LogUtils;
 import com.vaibhav.moviedetails.contract.MovieListContract;
+import com.vaibhav.moviedetails.data.Movie;
 import com.vaibhav.moviedetails.data.MovieResponse;
+import com.vaibhav.moviedetails.db.MoviesDatabase;
 import com.vaibhav.moviedetails.network.ApiClient;
 import com.vaibhav.moviedetails.network.ApiInterface;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -18,17 +25,22 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MovieListViewModel extends ViewModel {
 
+    private static final String TAG = MovieListViewModel.class.getSimpleName();
+
+    private WeakReference<Context> weakReference;
     private MovieListContract movieListContract;
 
     private String query = "";
     private int page = 1;
 
-    public MovieListViewModel(MovieListContract movieListContract) {
+    public MovieListViewModel(Context context, MovieListContract movieListContract) {
+        weakReference = new WeakReference<>(context);
         this.movieListContract = movieListContract;
     }
 
     public void initViewModel() {
         setQuery("friends");
+        getBookMarkedMovies();
     }
 
     public void setQuery(String query) {
@@ -37,6 +49,63 @@ public class MovieListViewModel extends ViewModel {
         }
         this.query = query;
         getMovies();
+    }
+
+    public void bookMarkMovie(Movie movie) {
+        Observable.just(movie)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Movie>() {
+                    @Override public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override public void onNext(Movie movie) {
+                        MoviesDatabase.getInstance(getContext()).getEventDao().insert(movie);
+                    }
+
+                    @Override public void onError(Throwable e) {
+                        LogUtils.printLog(TAG, "error");
+                    }
+
+                    @Override public void onComplete() {
+                        LogUtils.printLog(TAG, "added");
+                    }
+                });
+    }
+
+    public void removeBookMark(Movie movie) {
+        Observable.just(movie)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Movie>() {
+                    @Override public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override public void onNext(Movie movie) {
+                        MoviesDatabase.getInstance(getContext()).getEventDao().delete(movie);
+                    }
+
+                    @Override public void onError(Throwable e) {
+                        LogUtils.printLog(TAG, "error");
+                    }
+
+                    @Override public void onComplete() {
+                        LogUtils.printLog(TAG, "removed");
+                    }
+                });
+    }
+
+    private void getBookMarkedMovies() {
+        Disposable disposable = MoviesDatabase.getInstance(getContext())
+                .getEventDao()
+                .getAllMovies()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movies -> {
+                    if (movieListContract != null) {
+                        movieListContract.showBookMarkedMovies(new ArrayList<>(movies));
+                    }
+                });
     }
 
     private void getMovies() {
@@ -65,5 +134,12 @@ public class MovieListViewModel extends ViewModel {
 
                     }
                 });
+    }
+
+    private Context getContext() {
+        if (weakReference != null) {
+            return weakReference.get();
+        }
+        return null;
     }
 }

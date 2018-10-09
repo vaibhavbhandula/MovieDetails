@@ -22,6 +22,8 @@ public class Movie {
     @SerializedName("Poster") private String poster = "";
     @SerializedName("Actors") private String actors = "";
 
+    private boolean isBookMarked = false;
+
     public String getImdbId() {
         return StringUtils.getNonNullString(imdbId);
     }
@@ -54,7 +56,7 @@ public class Movie {
         return StringUtils.getNonNullString(actors);
     }
 
-    public void setImdbId(String imdbId) {
+    public void setImdbId(@NonNull String imdbId) {
         this.imdbId = imdbId;
     }
 
@@ -84,5 +86,13 @@ public class Movie {
 
     public void setActors(String actors) {
         this.actors = actors;
+    }
+
+    public boolean isBookMarked() {
+        return isBookMarked;
+    }
+
+    public void setBookMarked(boolean bookMarked) {
+        isBookMarked = bookMarked;
     }
 }

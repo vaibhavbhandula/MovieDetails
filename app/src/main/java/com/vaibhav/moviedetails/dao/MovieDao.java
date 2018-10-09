@@ -10,13 +10,15 @@ import com.vaibhav.moviedetails.data.Movie;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 /**
  * @author Vaibhav Bhandula on 09/10/18.
  */
 @Dao
 public interface MovieDao {
 
-    @Query("Select * from movie") List<Movie> getAllMovies();
+    @Query("Select * from movie") Flowable<List<Movie>> getAllMovies();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) void insert(Movie... movies);
 
