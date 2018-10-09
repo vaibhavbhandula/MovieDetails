@@ -2,6 +2,7 @@ package com.vaibhav.moviedetails.data;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.vaibhav.moviedetails.commons.StringUtils;
@@ -12,7 +13,7 @@ import com.vaibhav.moviedetails.commons.StringUtils;
 @Entity
 public class Movie {
 
-    @PrimaryKey @SerializedName("imdbID") private String imdbId = "";
+    @PrimaryKey @SerializedName("imdbID") @NonNull private String imdbId = "";
     @SerializedName("Title") private String title = "";
     @SerializedName("Year") private String year = "";
     @SerializedName("Genre") private String genre = "";
@@ -51,5 +52,37 @@ public class Movie {
 
     public String getActors() {
         return StringUtils.getNonNullString(actors);
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public void setImdbRating(String imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public void setActors(String actors) {
+        this.actors = actors;
     }
 }

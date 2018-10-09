@@ -1,12 +1,13 @@
 package com.vaibhav.moviedetails.network;
 
 import com.vaibhav.moviedetails.BuildConfig;
-import com.vaibhav.moviedetails.commons.Utils;
 
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -14,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiClient {
 
-    private static final String BASE_URL = "https://api.non.sa/";
+    private static final String BASE_URL = "http://www.omdbapi.com/";
 
     private static Retrofit retrofit = null;
 
@@ -29,7 +30,9 @@ public class ApiClient {
                 client.addNetworkInterceptor(interceptor);
             }
             client.addInterceptor(chain -> {
-                Request request = chain.request().newBuilder().headers(Utils.getHeaders()).build();
+                Request request = chain.request();
+                HttpUrl url = request.url().newBuilder().addQueryParameter("apikey", "8336b2a5").build();
+                request = request.newBuilder().url(url).build();
                 return chain.proceed(request);
             });
         }
@@ -41,6 +44,7 @@ public class ApiClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(getOkHttpClient())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

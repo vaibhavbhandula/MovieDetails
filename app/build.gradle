@@ -10,6 +10,11 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         multiDexEnabled true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -41,6 +46,7 @@ dependencies {
     implementation "com.android.support:multidex:${rootProject.ext.multiDexVersion}"
     implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${rootProject.ext.retrofitVersion}"
     implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.interceptorVersion}"
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroidVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJavaVersion}"

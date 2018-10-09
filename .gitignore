@@ -31,6 +31,9 @@
 .DS_Store
 /build
 
+#schema folder
+/app/schemas/
+
 # tags
 tag
 tags
