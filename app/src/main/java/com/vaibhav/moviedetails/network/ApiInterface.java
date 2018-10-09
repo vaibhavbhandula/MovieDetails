@@ -1,5 +1,8 @@
 package com.vaibhav.moviedetails.network;
 
+import com.vaibhav.moviedetails.data.Movie;
+import com.vaibhav.moviedetails.data.MovieResponse;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -10,8 +13,8 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @GET("/")
-    Observable<Void> getMovieList(@Query("page") int mPage, @Query("s") String mQuery);
+    Observable<MovieResponse> getMovieList(@Query("page") int mPage, @Query("s") String mQuery);
 
     @GET("/")
-    Observable<Void> getMovieDetails(@Query("i") String imdbId);
+    Observable<Movie> getMovieDetails(@Query("i") String imdbId);
 }
