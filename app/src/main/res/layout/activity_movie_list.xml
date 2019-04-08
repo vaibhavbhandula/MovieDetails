@@ -14,12 +14,12 @@
         android:id="@+id/bookmark_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="@dimen/size10" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movies_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="@dimen/size10" />
 
 </LinearLayout>

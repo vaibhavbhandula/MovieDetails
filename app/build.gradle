@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -41,21 +44,27 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation "junit:junit:${rootProject.ext.junitVersion}"
+    //support libs
     implementation "com.android.support:appcompat-v7:${rootProject.ext.appcompatVersion}"
     implementation "com.android.support:design:${rootProject.ext.appcompatVersion}"
     implementation "com.android.support:multidex:${rootProject.ext.multiDexVersion}"
+    //retrofit
     implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${rootProject.ext.retrofitVersion}"
     implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.interceptorVersion}"
+    //rx Java
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroidVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJavaVersion}"
     //room
     implementation "android.arch.persistence.room:runtime:${rootProject.ext.roomVersion}"
-    annotationProcessor "android.arch.persistence.room:compiler:${rootProject.ext.roomVersion}"
+    kapt "android.arch.persistence.room:compiler:${rootProject.ext.roomVersion}"
     implementation "android.arch.persistence.room:rxjava2:${rootProject.ext.roomVersion}"
-    implementation "com.jakewharton:butterknife:${rootProject.ext.butterknifeVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${rootProject.ext.butterknifeVersion}"
+    //lifecycle
+    implementation "android.arch.lifecycle:extensions:${rootProject.ext.roomVersion}"
+    //glide
     implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glideVersion}"
+    kapt "com.github.bumptech.glide:compiler:${rootProject.ext.glideVersion}"
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

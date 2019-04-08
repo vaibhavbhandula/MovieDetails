@@ -4,12 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/movie_layout"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginRight="10dp"
+    android:layout_height="@dimen/size100"
+    android:layout_marginLeft="@dimen/size10"
+    android:layout_marginTop="@dimen/size5"
+    android:layout_marginRight="@dimen/size10"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="2dp">
+    app:cardCornerRadius="@dimen/size2">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,21 +17,21 @@
 
         <ImageView
             android:id="@+id/iv_poster"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/size80"
+            android:layout_height="@dimen/size80"
             android:layout_centerVertical="true"
-            android:layout_margin="2dp" />
+            android:layout_margin="@dimen/size2" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/size10"
             android:layout_toStartOf="@+id/iv_add"
             android:layout_toEndOf="@+id/iv_poster"
             android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingTop="@dimen/size10"
+            android:paddingBottom="@dimen/size10">
 
             <TextView
                 android:id="@+id/tv_name"
@@ -44,7 +44,7 @@
                 android:id="@+id/tv_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp" />
+                android:layout_marginTop="@dimen/size2" />
 
         </LinearLayout>
 
