@@ -20,6 +20,8 @@ class MovieListViewModel : ViewModel() {
 
     private var query = ""
     private var pageNo = 1
+    private var isEndOfList = false
+    private var isQueryChanged = false
 
     init {
         setQuery("friends")
@@ -31,7 +33,18 @@ class MovieListViewModel : ViewModel() {
             return
         }
         this.query = query
-        getMovies()
+        pageNo = 1
+        isEndOfList = false
+        isQueryChanged = true
+        getMovies(false)
+    }
+
+    fun loadNextPage() {
+        if (isEndOfList) {
+            return
+        }
+        pageNo++
+        getMovies(true)
     }
 
     fun addBookMark(movie: Movie) {
@@ -58,7 +71,7 @@ class MovieListViewModel : ViewModel() {
         })
     }
 
-    private fun getMovies() {
+    private fun getMovies(pagination: Boolean) {
         moviesRepository.getMoviesList(pageNo, query, object : Observer<ArrayList<Movie>> {
             override fun onSubscribe(d: Disposable) {
             }
@@ -67,10 +80,15 @@ class MovieListViewModel : ViewModel() {
             }
 
             override fun onNext(t: ArrayList<Movie>) {
-                checkForBookMarks(t)
+                if (t.isEmpty()) {
+                    isEndOfList = true
+                } else {
+                    checkForBookMarks(t, pagination)
+                }
             }
 
             override fun onError(e: Throwable) {
+                pageNo--
             }
 
         })
@@ -94,12 +112,18 @@ class MovieListViewModel : ViewModel() {
         })
     }
 
-    private fun checkForBookMarks(movies: ArrayList<Movie>) {
+    private fun checkForBookMarks(movies: ArrayList<Movie>, pagination: Boolean) {
+        var oldList = moviesList.value ?: ArrayList()
         movies.forEach {
             val item = bookMarkedList.value?.find { bookmarked -> bookmarked.imdbId == it.imdbId }
             it.bookmarked = (item != null)
         }
-        moviesList.value = movies
+        if (pagination) {
+            oldList.addAll(movies)
+        } else {
+            oldList = ArrayList(movies)
+        }
+        moviesList.value = oldList
     }
 
     private fun updateBookMarksInSearch() {

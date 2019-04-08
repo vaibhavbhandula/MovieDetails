@@ -1,5 +1,6 @@
 package com.vaibhav.moviedetails.view.adapter
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -36,9 +37,10 @@ class MoviesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     fun updateList(movies: ArrayList<Movie>) {
+        val result = DiffUtil.calculateDiff(MovieDiffUtil(this.moviesList, movies))
         this.moviesList.clear()
         this.moviesList.addAll(movies)
-        notifyDataSetChanged()
+        result.dispatchUpdatesTo(this)
     }
 
     private inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -72,13 +74,28 @@ class MoviesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             if (movie?.bookmarked == true) {
                 movie?.bookmarked = false
-                movieListener?.onUnLikeMovie(movie!!)
                 itemView.iv_add?.visibility = View.GONE
+                movieListener?.onUnLikeMovie(movie!!)
             } else {
                 movie?.bookmarked = true
-                movieListener?.onLikeMovie(movie!!)
                 itemView.iv_add?.visibility = View.VISIBLE
+                movieListener?.onLikeMovie(movie!!)
             }
         }
+    }
+
+    class MovieDiffUtil(private val mOldList: ArrayList<Movie>,
+                        private val mNewList: ArrayList<Movie>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val newItem = mNewList[newItemPosition]
+            val oldItem = mOldList[oldItemPosition]
+            return newItem.imdbId.equals(oldItem.imdbId, ignoreCase = true)
+        }
+
+        override fun getOldListSize() = mOldList.size
+
+        override fun getNewListSize() = mNewList.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = false
     }
 }
