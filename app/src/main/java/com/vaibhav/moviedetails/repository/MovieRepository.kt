@@ -87,7 +87,7 @@ class MovieRepository {
                 })
     }
 
-    fun removeBookMark(movie: Movie) {
+    fun removeBookMark(movie: Movie, observer: Observer<Boolean>) {
         Observable.just(movie)
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : Observer<Movie> {
@@ -101,10 +101,12 @@ class MovieRepository {
 
                     override fun onError(e: Throwable) {
                         LogUtils.printLog("movie_bookmark", "error")
+                        observer.onError(e)
                     }
 
                     override fun onComplete() {
                         LogUtils.printLog("movie_bookmark", "removed")
+                        observer.onNext(true)
                     }
                 })
     }

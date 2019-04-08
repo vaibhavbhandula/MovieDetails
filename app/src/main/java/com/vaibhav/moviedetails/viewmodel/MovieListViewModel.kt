@@ -2,6 +2,8 @@ package com.vaibhav.moviedetails.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.os.Handler
+import android.os.Looper
 import com.vaibhav.moviedetails.data.Movie
 import com.vaibhav.moviedetails.repository.MovieRepository
 import io.reactivex.Observer
@@ -37,7 +39,23 @@ class MovieListViewModel : ViewModel() {
     }
 
     fun deleteBookMark(movie: Movie) {
-        moviesRepository.removeBookMark(movie)
+        moviesRepository.removeBookMark(movie, object : Observer<Boolean> {
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onNext(t: Boolean) {
+                if (t) {
+                    updateBookMarksInSearch()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+            }
+
+        })
     }
 
     private fun getMovies() {
@@ -49,7 +67,7 @@ class MovieListViewModel : ViewModel() {
             }
 
             override fun onNext(t: ArrayList<Movie>) {
-                moviesList.value = t
+                checkForBookMarks(t)
             }
 
             override fun onError(e: Throwable) {
@@ -74,5 +92,28 @@ class MovieListViewModel : ViewModel() {
             }
 
         })
+    }
+
+    private fun checkForBookMarks(movies: ArrayList<Movie>) {
+        movies.forEach {
+            val item = bookMarkedList.value?.find { bookmarked -> bookmarked.imdbId == it.imdbId }
+            it.bookmarked = (item != null)
+        }
+        moviesList.value = movies
+    }
+
+    private fun updateBookMarksInSearch() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            val movies = moviesList.value ?: ArrayList()
+            movies.forEach {
+                val item = bookMarkedList.value?.find { bookmarked -> bookmarked.imdbId == it.imdbId }
+                if (item != null) {
+                    it.bookmarked = item.bookmarked
+                } else {
+                    it.bookmarked = false
+                }
+            }
+            moviesList.postValue(movies)
+        }, 200)
     }
 }
