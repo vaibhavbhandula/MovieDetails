@@ -104,6 +104,7 @@ class MovieListViewModel : ViewModel() {
 
             override fun onNext(t: ArrayList<Movie>) {
                 bookMarkedList.value = t
+                updateBookMarksInSearch()
             }
 
             override fun onError(e: Throwable) {

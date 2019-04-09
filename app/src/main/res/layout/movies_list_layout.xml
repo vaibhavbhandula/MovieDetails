@@ -55,6 +55,7 @@
             android:layout_height="@dimen/size30"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/size10"
             tools:src="@drawable/un_bookmarked" />
 
     </RelativeLayout>

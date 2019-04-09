@@ -39,10 +39,12 @@ class MovieDetailsViewModel : ViewModel() {
 
     fun bookMarkMovie() {
         movieRepository?.bookMarkMovie(movie.value!!)
+        movie.value?.bookmarked = true
     }
 
     fun removeBookMark() {
         movieRepository?.removeBookMark(movie.value!!, null)
+        movie.value?.bookmarked = false
     }
 
     private fun checkForBookMark(movieId: String, movie: Movie) {
