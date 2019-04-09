@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movie_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/size100"
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/size10"
-            android:layout_toStartOf="@+id/iv_add"
+            android:layout_toStartOf="@+id/iv_bookmark"
             android:layout_toEndOf="@+id/iv_poster"
             android:orientation="vertical"
             android:paddingTop="@dimen/size10"
@@ -49,12 +50,12 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/iv_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/iv_bookmark"
+            android:layout_width="@dimen/size30"
+            android:layout_height="@dimen/size30"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_input_add" />
+            tools:src="@drawable/un_bookmarked" />
 
     </RelativeLayout>
 

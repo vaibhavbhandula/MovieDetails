@@ -7,7 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.vaibhav.moviedetails.data.Movie
 import io.reactivex.Flowable
-
+import io.reactivex.Maybe
 
 
 /**
@@ -21,4 +21,6 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE) fun insert(vararg movies: Movie)
 
     @Delete fun delete(vararg movies: Movie)
+
+    @Query("Select * from movie where imdbId = :id") fun getMovie(id: String): Maybe<Movie>
 }

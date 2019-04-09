@@ -8,4 +8,5 @@ import com.vaibhav.moviedetails.data.Movie
 interface MovieListener {
     fun onLikeMovie(movie: Movie)
     fun onUnLikeMovie(movie: Movie)
+    fun openMovie(movie: Movie)
 }

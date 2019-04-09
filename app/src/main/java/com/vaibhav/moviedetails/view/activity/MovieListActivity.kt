@@ -3,6 +3,7 @@ package com.vaibhav.moviedetails.view.activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.nfc.tech.MifareUltralight
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -105,6 +106,15 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
 
     override fun onUnLikeMovie(movie: Movie) {
         movieListViewModel?.deleteBookMark(movie)
+    }
+
+    override fun openMovie(movie: Movie) {
+        val intent = Intent(this, MovieDetailsActivity::class.java)
+        val bundle = Bundle().apply {
+            putString("movie_id", movie.imdbId)
+        }
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     private val recyclerViewOnScrollListener = object : RecyclerView.OnScrollListener() {

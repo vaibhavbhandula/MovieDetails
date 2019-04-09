@@ -48,7 +48,8 @@ class MoviesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private var movie: Movie? = null
 
         init {
-            itemView.movie_layout?.setOnClickListener { bookmarkedClicked() }
+            itemView.iv_bookmark?.setOnClickListener { bookmarkedClicked() }
+            itemView.movie_layout?.setOnClickListener { movieClicked() }
         }
 
         fun bind(pos: Int) {
@@ -62,9 +63,9 @@ class MoviesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.tv_name?.text = movie?.title ?: ""
             itemView.tv_year?.text = movie?.year
             if (movie?.bookmarked == true) {
-                itemView.iv_add?.visibility = View.VISIBLE
+                itemView.iv_bookmark?.setImageResource(R.drawable.bookmarked)
             } else {
-                itemView.iv_add?.visibility = View.GONE
+                itemView.iv_bookmark?.setImageResource(R.drawable.un_bookmarked)
             }
         }
 
@@ -74,13 +75,20 @@ class MoviesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             if (movie?.bookmarked == true) {
                 movie?.bookmarked = false
-                itemView.iv_add?.visibility = View.GONE
+                itemView.iv_bookmark?.setImageResource(R.drawable.un_bookmarked)
                 movieListener?.onUnLikeMovie(movie!!)
             } else {
                 movie?.bookmarked = true
-                itemView.iv_add?.visibility = View.VISIBLE
+                itemView.iv_bookmark?.setImageResource(R.drawable.bookmarked)
                 movieListener?.onLikeMovie(movie!!)
             }
+        }
+
+        private fun movieClicked() {
+            if (movieListener == null || movie == null) {
+                return
+            }
+            movieListener?.openMovie(movie!!)
         }
     }
 
