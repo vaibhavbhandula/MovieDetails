@@ -2,11 +2,12 @@ package com.vaibhav.moviedetails.view.activity
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.vaibhav.moviedetails.R
 import com.vaibhav.moviedetails.data.Movie
+import com.vaibhav.moviedetails.databinding.ActivityMovieDetailsBinding
 import com.vaibhav.moviedetails.viewmodel.MovieDetailsViewModel
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
@@ -16,13 +17,14 @@ import kotlinx.android.synthetic.main.activity_movie_details.*
 class MovieDetailsActivity : AppCompatActivity() {
 
     private lateinit var movieDetailsViewModel: MovieDetailsViewModel
+    private lateinit var binding: ActivityMovieDetailsBinding
 
     private var movieId: String = ""
     private var isBookMarked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_details)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details)
         readBundle()
         initWidgets()
     }
@@ -42,18 +44,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun updateMovieData(movie: Movie?) {
-        val imageUrl = movie?.poster ?: ""
-        if (!imageUrl.isEmpty()) {
-            Glide.with(this)
-                    .load(imageUrl)
-                    .into(iv_poster)
-        }
-        tv_title?.text = movie?.title ?: ""
-        tv_director?.text = movie?.director ?: ""
-        tv_year?.text = movie?.year ?: ""
-        tv_genre?.text = movie?.genre ?: ""
-        tv_actors?.text = movie?.actors ?: ""
-        tv_rating?.text = movie?.imdbRating ?: ""
+        binding.movie = movie
         isBookMarked = movie?.bookmarked ?: false
         handleBookMarkUI()
     }
