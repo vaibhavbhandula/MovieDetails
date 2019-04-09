@@ -3,10 +3,13 @@
     <dimen name="size2">2dp</dimen>
     <dimen name="size5">5dp</dimen>
     <dimen name="size10">10dp</dimen>
+    <dimen name="size20">20dp</dimen>
     <dimen name="size30">30dp</dimen>
     <dimen name="size50">50dp</dimen>
+    <dimen name="size60">60dp</dimen>
     <dimen name="size80">80dp</dimen>
     <dimen name="size100">100dp</dimen>
+    <dimen name="size150">150dp</dimen>
     <dimen name="size250">250dp</dimen>
 
     <dimen name="text_size16">16sp</dimen>

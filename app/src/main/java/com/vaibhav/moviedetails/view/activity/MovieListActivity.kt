@@ -48,7 +48,7 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
     }
 
     private fun setUpMoviesList() {
-        moviesAdapter = MoviesAdapter()
+        moviesAdapter = MoviesAdapter(MoviesAdapter.Type.SEARCH)
         moviesAdapter?.setMovieListener(this)
         movies_view?.layoutManager = LinearLayoutManager(this)
         movies_view?.adapter = moviesAdapter
@@ -56,7 +56,7 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
     }
 
     private fun setUpBookMarkList() {
-        bookmarksAdapter = MoviesAdapter()
+        bookmarksAdapter = MoviesAdapter(MoviesAdapter.Type.BOOKMARKS)
         bookmarksAdapter?.setMovieListener(this)
         bookmark_view?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false)

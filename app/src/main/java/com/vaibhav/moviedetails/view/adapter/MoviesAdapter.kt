@@ -14,14 +14,15 @@ import kotlinx.android.synthetic.main.movies_list_layout.view.*
 /**
  * @author Vaibhav Bhandula on 08/04/19.
  */
-class MoviesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MoviesAdapter(private var type: Type) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var moviesList = ArrayList<Movie>()
     private var movieListener: MovieListener? = null
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+        val resource = if (type == Type.BOOKMARKS) R.layout.bookmark_list_layout else R.layout.movies_list_layout
         return MovieViewHolder(LayoutInflater.from(p0.context)
-                .inflate(R.layout.movies_list_layout, p0, false))
+                .inflate(resource, p0, false))
     }
 
     override fun getItemCount(): Int {
@@ -105,5 +106,10 @@ class MoviesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun getNewListSize() = mNewList.size
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = false
+    }
+
+    enum class Type {
+        BOOKMARKS,
+        SEARCH
     }
 }
